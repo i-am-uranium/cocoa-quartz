@@ -1,0 +1,5 @@
+{
+	"env": "PROD",
+	"authEndpoint": "https://yourauth.domain.com",
+	"serviceEndpoint": "https://yourservice.domain.com"
+}
