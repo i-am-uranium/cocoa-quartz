@@ -36,6 +36,8 @@ flutter:
     - assets/icons/home.png
     - assets/icons/preferences.png
     - assets/icons/timeline.png
+    - assets/icons/social_facebook.png
+    - assets/icons/social_google.png
     - assets/logo.png
     - assets/images/login_bg.png
 

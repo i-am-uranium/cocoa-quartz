@@ -37,6 +37,11 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         await userRepository.persistToken(token);
         yield LoginSuccess();
       }
+      //Todo remove it after testing
+      yield LoginFailure(
+        error: token.error,
+        errorCode: token.errorCode,
+      );
     }
   }
 }

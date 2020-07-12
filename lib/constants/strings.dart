@@ -8,6 +8,8 @@ class Strings {
   static const signIn = 'Sign In';
   static const welcomeBack = 'Welcome Back!';
   static const signInToContinue = 'Sing in to continue';
+  static const doNotHavenAnAccount = "Don't have an account?";
+  static const createAnAccount = 'Create an account';
 
   static const dev = 'DEV';
   static const somethingWentWrong = 'Something went wrong';
