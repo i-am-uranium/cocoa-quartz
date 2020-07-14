@@ -7,12 +7,17 @@ mixin Routes {
     router
       ..define(
         root,
-        handler: loginHandler,
+        handler: rootHandler,
         transitionType: TransitionType.fadeIn,
       )
       ..define(
         LoginPage.route,
         handler: loginHandler,
+        transitionType: TransitionType.fadeIn,
+      )
+      ..define(
+        ForgotPasswordPage.route,
+        handler: forgotPasswordPageHandler,
         transitionType: TransitionType.fadeIn,
       )
       ..notFoundHandler = loginHandler;

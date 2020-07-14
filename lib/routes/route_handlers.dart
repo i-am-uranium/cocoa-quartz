@@ -4,6 +4,8 @@ final _loginPage = LoginPage(
   userRepository: UserRepository(AuthApi()),
 );
 
+const _forgotPasswordPage = ForgotPasswordPage();
+
 Handler rootHandler = Handler(handlerFunc: (context, params) {
   if (WebLocalStorageHelper().getLoginState()) {
     //todo: return home page
@@ -13,3 +15,5 @@ Handler rootHandler = Handler(handlerFunc: (context, params) {
 });
 
 Handler loginHandler = Handler(handlerFunc: (context, params) => _loginPage);
+Handler forgotPasswordPageHandler =
+    Handler(handlerFunc: (context, params) => _forgotPasswordPage);

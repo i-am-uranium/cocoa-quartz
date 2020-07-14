@@ -5,11 +5,18 @@ class Strings {
   static const passwordHint = 'PASSWORD';
   static const passwordLabel = 'PASSWORD';
   static const forgotPassword = 'Forgot Password?';
+  static const recoveryEmailHint = 'idontknowflutter@ccq.com';
   static const signIn = 'Sign In';
   static const welcomeBack = 'Welcome Back!';
   static const signInToContinue = 'Sing in to continue';
   static const doNotHavenAnAccount = "Don't have an account?";
   static const createAnAccount = 'Create an account';
+  static const rememberPassword = 'Remember Password?';
+  static const alreadyHaveAnAccount = 'Already have an account?';
+  static const passwordRecovery = 'Password Recovery';
+  static const enterEmailToReceiveYourPassword =
+      'Enter your email to receive your password';
+  static const send = 'Send';
 
   static const dev = 'DEV';
   static const somethingWentWrong = 'Something went wrong';

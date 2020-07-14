@@ -40,6 +40,7 @@ flutter:
     - assets/icons/social_google.png
     - assets/logo.png
     - assets/images/login_bg.png
+    - assets/images/forgot_password_bg.png
 
 fonts:
   - family: Poppins

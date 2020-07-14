@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../api/api.dart';
@@ -9,11 +8,15 @@ import '../../bloc/login/login_bloc.dart';
 import '../../constants/colors.dart';
 import '../../constants/constant.dart';
 import '../../repository/user.dart';
+import '../../routes/application.dart';
 import '../../utils/utils.dart';
 import '../common/custom_container.dart';
-import '../common/horizontal_spacer.dart';
 import '../common/logo.dart';
+import '../common/raised_button.dart';
 import '../common/vertical_spacer.dart';
+import '../forgot_password/forgot_password_page.dart';
+import '../onboarding/onboarding_form_field.dart';
+import '../onboarding/onboarding_left_view.dart';
 
 class DesktopLoginForm extends StatefulWidget {
   const DesktopLoginForm({
@@ -71,17 +74,24 @@ class _DesktopLoginFormState extends State<DesktopLoginForm> {
           builder: (context, state) => Container(
             width: MediaQuery.of(context).size.width,
             height: MediaQuery.of(context).size.height,
-            color: AppColors.loginFormBG,
+            color: AppColors.onboardingFormBG,
             child: Stack(
               children: [
                 Positioned(
                   top: 0,
                   left: 0,
-                  child: LoginFormLeftView(
-                    imageHeight: MediaQuery.of(context).size.height * .7,
-                    createAccountButtonWidth:
-                        MediaQuery.of(context).size.width * .3 - 88,
-                    onCreateAccountClick: _handleCreateNewAccount,
+                  child: Container(
+                    color: AppColors.onboardingFormBG,
+                    height: MediaQuery.of(context).size.height,
+                    child: OnboardingFormLeftView(
+                      imageWidth: MediaQuery.of(context).size.width * .6,
+                      imageHeight: MediaQuery.of(context).size.height * .7,
+                      buttonWidth: MediaQuery.of(context).size.width * .3 - 88,
+                      onButtonClick: _handleCreateNewAccount,
+                      buttonTitle: Strings.createAnAccount,
+                      imageAssets: Assets.loginBGPng,
+                      title: Strings.doNotHavenAnAccount,
+                    ),
                   ),
                 ),
                 Positioned(
@@ -98,23 +108,7 @@ class _DesktopLoginFormState extends State<DesktopLoginForm> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Row(
-                          children: [
-                            const AppLogo(),
-                            const HorizontalSpacer(
-                              space: 16,
-                            ),
-                            Text(
-                              Strings.appName,
-                              style: TextStyle(
-                                fontSize: 28,
-                                fontWeight: FontWeight.w300,
-                                color: AppColors.black.withOpacity(.8),
-                                letterSpacing: .5,
-                              ),
-                            ),
-                          ],
-                        ),
+                        const AppLogo(),
                         const VerticalSpacer(
                           space: 24,
                         ),
@@ -140,7 +134,7 @@ class _DesktopLoginFormState extends State<DesktopLoginForm> {
                         const VerticalSpacer(
                           space: 32,
                         ),
-                        LoginFormTextField(
+                        OnboardingFormTextField(
                           width: MediaQuery.of(context).size.width * .3 - 88,
                           height: 64,
                           hint: Strings.emailHint,
@@ -150,7 +144,7 @@ class _DesktopLoginFormState extends State<DesktopLoginForm> {
                         const VerticalSpacer(
                           space: 16,
                         ),
-                        LoginFormTextField(
+                        OnboardingFormTextField(
                           width: MediaQuery.of(context).size.width * .3 - 88,
                           height: 64,
                           hint: Strings.passwordHint,
@@ -171,7 +165,7 @@ class _DesktopLoginFormState extends State<DesktopLoginForm> {
                         const VerticalSpacer(
                           space: 24,
                         ),
-                        FormRaisedButton(
+                        OnboardingFormRaisedButton(
                           width: MediaQuery.of(context).size.width * .3 - 88,
                           onClick: _isValidInput && !_showProgressIndicator
                               ? _handleLoginButtonClick
@@ -261,7 +255,10 @@ class _DesktopLoginFormState extends State<DesktopLoginForm> {
   }
 
   void _handleForgotPasswordButtonClick() {
-    logger.d('Forgot password button clicked.');
+    Application.router.navigateTo(
+      context,
+      ForgotPasswordPage.route,
+    );
   }
 
   void _handleLoginButtonClick() {
@@ -322,48 +319,6 @@ class ErrorSnackBar extends StatelessWidget {
           ],
         ),
       ),
-    );
-  }
-}
-
-class LoginFormLeftView extends StatelessWidget {
-  const LoginFormLeftView({
-    @required this.imageHeight,
-    @required this.createAccountButtonWidth,
-    this.onCreateAccountClick,
-    Key key,
-  }) : super(key: key);
-  final double imageHeight;
-  final double createAccountButtonWidth;
-  final VoidCallback onCreateAccountClick;
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Image.asset(
-          Assets.loginBGPng,
-          height: imageHeight,
-        ),
-        const VerticalSpacer(
-          space: 32,
-        ),
-        Text(
-          Strings.doNotHavenAnAccount,
-          style: TextStyle(
-            color: AppColors.black.withOpacity(.8),
-          ),
-        ),
-        const VerticalSpacer(
-          space: 32,
-        ),
-        FormRaisedButton(
-          width: createAccountButtonWidth,
-          onClick: onCreateAccountClick,
-          color: AppColors.black.withOpacity(.8),
-          text: Strings.createAnAccount,
-        )
-      ],
     );
   }
 }
@@ -462,87 +417,6 @@ class SocialButton extends StatelessWidget {
           socialIconAsset,
           width: 21,
           height: 21,
-        ),
-      ),
-    );
-  }
-}
-
-class FormRaisedButton extends StatelessWidget {
-  const FormRaisedButton({
-    @required this.text,
-    @required this.width,
-    this.onClick,
-    this.color = AppColors.primary,
-    Key key,
-  }) : super(key: key);
-  final double width;
-  final VoidCallback onClick;
-  final Color color;
-  final String text;
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      width: width,
-      height: 46,
-      child: RaisedButton(
-        color: color,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8),
-        ),
-        elevation: 2,
-        onPressed: onClick,
-        child: Text(
-          text,
-          style: const TextStyle(color: AppColors.white),
-        ),
-      ),
-    );
-  }
-}
-
-class LoginFormTextField extends StatelessWidget {
-  const LoginFormTextField({
-    @required this.width,
-    @required this.height,
-    @required this.label,
-    @required this.hint,
-    this.obscureText = false,
-    this.controller,
-    Key key,
-  }) : super(key: key);
-  final double width;
-  final double height;
-  final String label;
-  final String hint;
-  final TextEditingController controller;
-  final bool obscureText;
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      width: width,
-      height: height,
-      child: Center(
-        child: CustomContainer(
-          color: AppColors.mainBG,
-          shadowColor: AppColors.loginFormBG,
-          child: TextFormField(
-            controller: controller,
-            keyboardType:
-                obscureText ? TextInputType.text : TextInputType.emailAddress,
-            cursorColor: AppColors.primary,
-            obscureText: obscureText,
-            decoration: InputDecoration(
-              labelText: label,
-              contentPadding: const EdgeInsets.only(
-                left: 16,
-              ),
-              hintText: hint,
-              border: InputBorder.none,
-            ),
-          ),
         ),
       ),
     );
