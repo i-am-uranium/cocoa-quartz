@@ -2,21 +2,18 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../api/api.dart';
-import '../../bloc/internet/connection_bloc.dart';
-import '../../bloc/login/login_bloc.dart';
-import '../../constants/colors.dart';
-import '../../constants/constant.dart';
-import '../../repository/user.dart';
-import '../../routes/application.dart';
-import '../../utils/utils.dart';
-import '../common/custom_container.dart';
-import '../common/logo.dart';
-import '../common/raised_button.dart';
-import '../common/vertical_spacer.dart';
+import '../../../api/api.dart';
+import '../../../bloc/bloc.dart';
+import '../../../constants/constant.dart';
+import '../../../repository/repository.dart';
+import '../../../routes/application.dart';
+import '../../../utils/logger.dart';
+import '../../common/common.dart';
+import '../error_bar.dart';
 import '../forgot_password/forgot_password_page.dart';
-import '../onboarding/onboarding_form_field.dart';
-import '../onboarding/onboarding_left_view.dart';
+import '../onboarding_form_field.dart';
+import '../onboarding_left_view.dart';
+import '../raised_button.dart';
 
 class DesktopLoginForm extends StatefulWidget {
   const DesktopLoginForm({
@@ -32,7 +29,6 @@ class _DesktopLoginFormState extends State<DesktopLoginForm> {
   final TextEditingController _passwordTextController = TextEditingController();
   String _email;
   String _password;
-  bool _showProgressIndicator = false;
   double _errorToastHeight = 0;
   String _errorMessage = '';
 
@@ -108,7 +104,7 @@ class _DesktopLoginFormState extends State<DesktopLoginForm> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const AppLogo(),
+                        const AppLogoWithText(),
                         const VerticalSpacer(
                           space: 24,
                         ),
@@ -167,10 +163,10 @@ class _DesktopLoginFormState extends State<DesktopLoginForm> {
                         ),
                         OnboardingFormRaisedButton(
                           width: MediaQuery.of(context).size.width * .3 - 88,
-                          onClick: _isValidInput && !_showProgressIndicator
-                              ? _handleLoginButtonClick
-                              : null,
+                          onClick:
+                              _isValidInput ? _handleLoginButtonClick : null,
                           text: Strings.signIn,
+                          showActivityIndicator: state is LoginInProgress,
                         ),
                         const VerticalSpacer(
                           space: 24,
@@ -185,17 +181,10 @@ class _DesktopLoginFormState extends State<DesktopLoginForm> {
                   ),
                 ),
                 Positioned(
-                  top: MediaQuery.of(context).size.height * .5,
-                  right: (MediaQuery.of(context).size.width * .4) / 2,
-                  child: _showProgressIndicator
-                      ? const CupertinoActivityIndicator()
-                      : const SizedBox(),
-                ),
-                Positioned(
                   top: 0,
                   right: 0,
                   left: 0,
-                  child: ErrorSnackBar(
+                  child: ErrorBar(
                     width: MediaQuery.of(context).size.width,
                     height: _errorToastHeight,
                     message: _errorMessage,
@@ -214,20 +203,14 @@ class _DesktopLoginFormState extends State<DesktopLoginForm> {
     setState(() {
       _errorToastHeight = 0;
       _errorMessage = '';
-      _showProgressIndicator = false;
     });
   }
 
   void _handleLoginStateChange(LoginState state) {
-    if (state is LoginSuccess) {
-      setState(() => _showProgressIndicator = false);
-      return;
-    }
     if (state is LoginFailure) {
       setState(() {
         _errorToastHeight = 64;
-        _errorMessage = 'Something went wrong';
-        _showProgressIndicator = false;
+        _errorMessage = state.error;
       });
     }
   }
@@ -236,8 +219,7 @@ class _DesktopLoginFormState extends State<DesktopLoginForm> {
     if (state is InternetUnAvailable) {
       setState(() {
         _errorToastHeight = 64;
-        _errorMessage = 'Your internet connection appears to be offline';
-        _showProgressIndicator = false;
+        _errorMessage = Strings.internetNotAvailable;
       });
       return;
     }
@@ -263,9 +245,6 @@ class _DesktopLoginFormState extends State<DesktopLoginForm> {
 
   void _handleLoginButtonClick() {
     _loginBloc.add(LoginButtonPressed(email: _email, password: _password));
-    setState(() {
-      _showProgressIndicator = true;
-    });
   }
 
   void _handleGoogleLogin() {
@@ -278,48 +257,6 @@ class _DesktopLoginFormState extends State<DesktopLoginForm> {
 
   void _handleCreateNewAccount() {
     logger.i('Create new account clicked');
-  }
-}
-
-class ErrorSnackBar extends StatelessWidget {
-  const ErrorSnackBar({
-    @required this.width,
-    this.height = 0,
-    this.message = '',
-    this.onCloseButtonClick,
-    Key key,
-  }) : super(key: key);
-  final double width;
-  final double height;
-  final String message;
-  final VoidCallback onCloseButtonClick;
-  @override
-  Widget build(BuildContext context) {
-    return AnimatedContainer(
-      width: width,
-      height: height,
-      duration: const Duration(milliseconds: 1000),
-      curve: Curves.easeIn,
-      child: CustomContainer(
-        borderRadius: 4,
-        shadowColor: AppColors.errorBG,
-        child: Stack(
-          children: [
-            Align(
-              child: Text(message),
-            ),
-            Positioned(
-              top: 0,
-              right: 16,
-              child: IconButton(
-                icon: const Icon(Icons.close),
-                onPressed: onCloseButtonClick,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
   }
 }
 

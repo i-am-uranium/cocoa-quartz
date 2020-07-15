@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:responsive_builder/responsive_builder.dart';
 
-import '../../repository/repository.dart';
+import '../../../repository/repository.dart';
 import 'login_form.dart';
 
 class LoginPage extends StatelessWidget {

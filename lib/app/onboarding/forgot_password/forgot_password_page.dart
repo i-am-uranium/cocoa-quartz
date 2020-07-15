@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:responsive_builder/responsive_builder.dart';
+
 import 'forgot_password_form.dart';
 
 class ForgotPasswordPage extends StatelessWidget {
@@ -6,8 +8,13 @@ class ForgotPasswordPage extends StatelessWidget {
   static const String route = 'forgot-password';
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: ForgotPasswordForm(),
+    return Material(
+      child: Scaffold(
+        body: ScreenTypeLayout(
+          mobile: const ForgotPasswordForm(),
+          desktop: const ForgotPasswordForm(),
+        ),
+      ),
     );
   }
 }

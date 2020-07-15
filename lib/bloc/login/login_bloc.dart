@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
+import '../../constants/constant.dart';
 import '../../models/models.dart';
 
 import '../../repository/user.dart';
@@ -38,9 +39,9 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         yield LoginSuccess();
       }
       //Todo remove it after testing
-      yield LoginFailure(
-        error: token.error,
-        errorCode: token.errorCode,
+      yield const LoginFailure(
+        error: Strings.somethingWentWrong,
+        errorCode: 500,
       );
     }
   }

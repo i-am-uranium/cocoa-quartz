@@ -17,7 +17,8 @@ class Strings {
   static const enterEmailToReceiveYourPassword =
       'Enter your email to receive your password';
   static const send = 'Send';
-
+  static const internetNotAvailable =
+      'Your internet connection appears to be offline';
   static const dev = 'DEV';
   static const somethingWentWrong = 'Something went wrong';
   static const requestToApiServerCancelled =

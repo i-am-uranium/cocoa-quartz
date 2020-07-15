@@ -63,4 +63,22 @@ class AuthApi {
           errorCode: DioErrorUtil.getErrorCode(error));
     }
   }
+
+  Future<GenericResponse> recoverPassword(String email) async {
+    GenericResponse response;
+    await Future.delayed(const Duration(seconds: 2), () {
+      response = GenericResponse(success: true);
+    });
+    return response;
+    try {
+      final response = await _dio.post(
+        '/users/$email/recover_password',
+      );
+      return GenericResponse.fromJson(response.data);
+    } on Exception catch (error, stacktrace) {
+      return GenericResponse(
+          error: DioErrorUtil.getError(error, stacktrace),
+          errorCode: DioErrorUtil.getErrorCode(error));
+    }
+  }
 }

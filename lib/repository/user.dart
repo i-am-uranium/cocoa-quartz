@@ -37,4 +37,9 @@ class UserRepository {
   Future<void> deleteToken() async {
     _webLocalStorage.clearLocalStorage();
   }
+
+  Future<GenericResponse> recoverPassword(String email) async {
+    final response = await authApi.recoverPassword(email);
+    return response;
+  }
 }
