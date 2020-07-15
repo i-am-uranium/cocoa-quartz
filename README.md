@@ -5,4 +5,4 @@ Platform for Modals
 ## Screenshots
 
 ![](screenshots/login.png)
-![](screenshots/forgot_password.png)
+![](screenshots/recover_password.png)
