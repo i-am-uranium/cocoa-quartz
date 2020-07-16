@@ -20,6 +20,11 @@ mixin Routes {
         handler: forgotPasswordPageHandler,
         transitionType: TransitionType.fadeIn,
       )
+      ..define(
+        CreateNewAccountPage.route,
+        handler: createNewAccountPageHandler,
+        transitionType: TransitionType.fadeIn,
+      )
       ..notFoundHandler = loginHandler;
   }
 }

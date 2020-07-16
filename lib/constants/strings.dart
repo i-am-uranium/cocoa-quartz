@@ -4,11 +4,15 @@ class Strings {
   static const emailLabel = 'EMAIL';
   static const passwordHint = 'PASSWORD';
   static const passwordLabel = 'PASSWORD';
+  static const nameHint = 'Name';
+  static const nameLabel = 'Name';
   static const forgotPassword = 'Forgot Password?';
   static const recoveryEmailHint = 'idontknowflutter@ccq.com';
   static const signIn = 'Sign In';
+  static const signUp = 'Sign Up';
   static const welcomeBack = 'Welcome Back!';
-  static const signInToContinue = 'Sing in to continue';
+  static const signInToContinue = 'Sign in to continue';
+  static const signUpToContinue = 'Sign up to continue';
   static const doNotHavenAnAccount = "Don't have an account?";
   static const createAnAccount = 'Create an account';
   static const rememberPassword = 'Remember Password?';

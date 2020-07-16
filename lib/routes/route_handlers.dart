@@ -5,6 +5,7 @@ final _loginPage = LoginPage(
 );
 
 const _forgotPasswordPage = ForgotPasswordPage();
+const _createNewAccountPage = CreateNewAccountPage();
 
 Handler rootHandler = Handler(handlerFunc: (context, params) {
   if (WebLocalStorageHelper().getLoginState()) {
@@ -17,3 +18,6 @@ Handler rootHandler = Handler(handlerFunc: (context, params) {
 Handler loginHandler = Handler(handlerFunc: (context, params) => _loginPage);
 Handler forgotPasswordPageHandler =
     Handler(handlerFunc: (context, params) => _forgotPasswordPage);
+
+Handler createNewAccountPageHandler =
+    Handler(handlerFunc: (context, params) => _createNewAccountPage);
