@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:modal_dashboard/app/home/home_page.dart';
 
 import '../../../bloc/bloc.dart';
 import '../../../constants/constant.dart';
@@ -8,6 +9,7 @@ import '../../../repository/repository.dart';
 import '../../../routes/application.dart';
 import '../../../utils/logger.dart';
 import '../../common/common.dart';
+import '../back_icon_button.dart';
 import '../error_bar.dart';
 import '../onboarding.dart';
 import '../onboarding_form_field.dart';
@@ -17,10 +19,12 @@ import '../raised_button.dart';
 class DesktopCreateNewAccountForm extends StatefulWidget {
   const DesktopCreateNewAccountForm({
     @required this.memberRepository,
+    @required this.authRepository,
     Key key,
   }) : super(key: key);
 
   final MemberRepository memberRepository;
+  final AuthRepository authRepository;
 
   @override
   _DesktopCreateNewAccountFormState createState() =>
@@ -43,8 +47,10 @@ class _DesktopCreateNewAccountFormState
   @override
   void initState() {
     super.initState();
-    _createAccountBloc =
-        CreateAccountBloc(memberRepository: widget.memberRepository);
+    _createAccountBloc = CreateAccountBloc(
+      memberRepository: widget.memberRepository,
+      authRepository: widget.authRepository,
+    );
     _nameTextController
         .addListener(() => setState(() => _name = _nameTextController.text));
     _emailTextController
@@ -177,7 +183,8 @@ class _DesktopCreateNewAccountFormState
                           onClick:
                               _isValidInput ? _handleCreateNewAccount : null,
                           text: Strings.signUp,
-                          showActivityIndicator: state is LoginInProgress,
+                          showActivityIndicator:
+                              state is CreateAccountInProgress,
                         ),
                         const VerticalSpacer(
                           space: 24,
@@ -189,11 +196,7 @@ class _DesktopCreateNewAccountFormState
                 Positioned(
                   top: 64,
                   left: MediaQuery.of(context).size.width * .6 + 32,
-                  child: IconButton(
-                    icon: Icon(
-                      Icons.arrow_back,
-                      color: AppColors.black.withOpacity(.8),
-                    ),
+                  child: BackIconButton(
                     onPressed: () => Application.router.navigateTo(
                       context,
                       LoginPage.route,
@@ -227,7 +230,12 @@ class _DesktopCreateNewAccountFormState
   }
 
   void _handleCreateAccountStateChange(CreateAccountState state) {
-    logger.d('Create account state change: $state');
+    if (state is CreateAccountSuccess) {
+      Application.router.navigateTo(
+        context,
+        HomePage.route,
+      );
+    }
   }
 
   void _handelInternetStateChange(InternetConnectionState state) {
@@ -262,5 +270,12 @@ class _DesktopCreateNewAccountFormState
 
   void _handleCreateNewAccount() {
     logger.i('Create new account clicked');
+    _createAccountBloc.add(
+      CreateAccountButtonPressed(
+        email: _email,
+        fullName: _name,
+        password: _password,
+      ),
+    );
   }
 }

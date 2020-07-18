@@ -7,6 +7,7 @@ import '../../../repository/repository.dart';
 import '../../../utils/logger.dart';
 import '../../common/logo_with_text.dart';
 import '../../common/vertical_spacer.dart';
+import '../back_icon_button.dart';
 import '../error_bar.dart';
 import '../onboarding_form_field.dart';
 import '../onboarding_left_view.dart';
@@ -152,11 +153,7 @@ class _ForgotPasswordFormState extends State<ForgotPasswordForm> {
                 Positioned(
                   top: 64,
                   left: MediaQuery.of(context).size.width * .6 + 32,
-                  child: IconButton(
-                    icon: Icon(
-                      Icons.arrow_back,
-                      color: AppColors.black.withOpacity(.8),
-                    ),
+                  child: BackIconButton(
                     onPressed: () => Navigator.of(context).pop(),
                   ),
                 ),

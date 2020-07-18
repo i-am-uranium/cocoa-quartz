@@ -6,7 +6,7 @@ class MemberRepository {
   MemberRepository(this.memberApi);
   final MemberApi memberApi;
 
-  Future<GenericResponse> createAccount(CreateMemberRequest request) async {
+  Future<Token> createAccount(CreateMemberRequest request) async {
     final response = await memberApi.createAccount(request);
     return response;
   }

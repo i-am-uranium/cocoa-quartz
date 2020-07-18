@@ -5,10 +5,15 @@ import '../utils/utils.dart';
 class MemberApi {
   static const _apiVersion = 'v1';
 
-  Future<GenericResponse> createAccount(CreateMemberRequest request) async {
-    GenericResponse response;
+  Future<Token> createAccount(CreateMemberRequest request) async {
+    Token response;
     await Future.delayed(const Duration(seconds: 2), () {
-      response = GenericResponse(success: true);
+      response = Token(
+        accessToken: 'accessToken',
+        tokenType: 'tokenType',
+        expiresAt: 71237012830128,
+        refreshToken: 'expiresAt',
+      );
     });
     return response;
     try {
@@ -16,12 +21,14 @@ class MemberApi {
         '/$_apiVersion/members',
         data: request.toJson(),
       );
-      return GenericResponse(
-          success: successRange
-              .contains(response != null ? response.statusCode : 0));
+      return Token(
+        accessToken: 'accessToken',
+        tokenType: 'tokenType',
+        expiresAt: 71237012830128,
+        refreshToken: 'expiresAt',
+      );
     } on Exception catch (error, stacktrace) {
-      return GenericResponse(
-          success: false,
+      return Token(
           error: DioErrorUtil.getError(error, stacktrace),
           errorCode: DioErrorUtil.getErrorCode(error));
     }

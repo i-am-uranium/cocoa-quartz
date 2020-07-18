@@ -3,7 +3,6 @@ import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
-import '../../constants/constant.dart';
 import '../../models/models.dart';
 
 import '../../repository/auth.dart';
@@ -34,15 +33,12 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
           error: token.error,
           errorCode: token.errorCode,
         );
-      } else {
-        await authRepository.persistToken(token);
-        yield LoginSuccess();
+        return;
       }
-      //Todo remove it after testing
-      yield const LoginFailure(
-        error: Strings.somethingWentWrong,
-        errorCode: 500,
-      );
+      await authRepository.persistToken(token);
+      await authRepository.persistLogInState(loggedIn: true);
+      yield LoginSuccess();
+      return;
     }
   }
 }

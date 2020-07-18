@@ -4,9 +4,9 @@ import '../data/data.dart';
 import '../models/models.dart';
 
 class AuthRepository {
-  AuthRepository(this.authApi);
+  AuthRepository(this.authApi, this.webLocalStorage);
   final AuthApi authApi;
-  final _webLocalStorage = WebLocalStorageHelper();
+  final WebLocalStorageHelper webLocalStorage;
 
   Future<Token> generateToken(String phone, String password) async {
     final request = TokenRequest(
@@ -31,11 +31,18 @@ class AuthRepository {
   }
 
   Future<void> persistToken(Token token) async {
-    //Logic to persist token goes here
+    webLocalStorage
+      ..saveAccessToken(token.accessToken)
+      ..saveRefreshToken(token.refreshToken)
+      ..saveTokenExpiryTime(token.expiresAt);
+  }
+
+  Future<void> persistLogInState({bool loggedIn}) async {
+    webLocalStorage.saveLoginState(login: loggedIn);
   }
 
   Future<void> deleteToken() async {
-    _webLocalStorage.clearLocalStorage();
+    webLocalStorage.clearLocalStorage();
   }
 
   Future<GenericResponse> recoverPassword(String email) async {

@@ -8,6 +8,7 @@ import '../../../repository/repository.dart';
 import '../../../routes/application.dart';
 import '../../../utils/logger.dart';
 import '../../common/common.dart';
+import '../../home/home.dart';
 import '../create_account/create_new_account_page.dart';
 import '../error_bar.dart';
 import '../forgot_password/forgot_password_page.dart';
@@ -216,6 +217,13 @@ class _DesktopLoginFormState extends State<DesktopLoginForm> {
         _errorToastHeight = 64;
         _errorMessage = state.error;
       });
+      return;
+    }
+    if (state is LoginSuccess) {
+      Application.router.navigateTo(
+        context,
+        HomePage.route,
+      );
     }
   }
 
