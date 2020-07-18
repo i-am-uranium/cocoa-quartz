@@ -21,8 +21,8 @@ mixin Routes {
         transitionType: TransitionType.fadeIn,
       )
       ..define(
-        CreateNewAccountPage.route,
-        handler: createNewAccountPageHandler,
+        CreateAccountPage.route,
+        handler: createAccountPageHandler,
         transitionType: TransitionType.fadeIn,
       )
       ..notFoundHandler = loginHandler;

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 import '../../constants/colors.dart';
-import 'raised_button.dart';
 import '../common/vertical_spacer.dart';
+import 'raised_button.dart';
 
 class OnboardingFormLeftView extends StatelessWidget {
   const OnboardingFormLeftView({

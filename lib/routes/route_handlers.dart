@@ -1,11 +1,16 @@
 part of 'application.dart';
 
 final _loginPage = LoginPage(
-  userRepository: UserRepository(AuthApi()),
+  authRepository: AuthRepository(AuthApi()),
 );
 
-const _forgotPasswordPage = ForgotPasswordPage();
-const _createNewAccountPage = CreateNewAccountPage();
+final _forgotPasswordPage = ForgotPasswordPage(
+  authRepository: AuthRepository(AuthApi()),
+);
+
+final _createNewAccountPage = CreateAccountPage(
+  memberRepository: MemberRepository(MemberApi()),
+);
 
 Handler rootHandler = Handler(handlerFunc: (context, params) {
   if (WebLocalStorageHelper().getLoginState()) {
@@ -19,5 +24,5 @@ Handler loginHandler = Handler(handlerFunc: (context, params) => _loginPage);
 Handler forgotPasswordPageHandler =
     Handler(handlerFunc: (context, params) => _forgotPasswordPage);
 
-Handler createNewAccountPageHandler =
+Handler createAccountPageHandler =
     Handler(handlerFunc: (context, params) => _createNewAccountPage);

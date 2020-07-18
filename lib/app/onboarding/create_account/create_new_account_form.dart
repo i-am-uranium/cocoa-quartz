@@ -1,9 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:modal_dashboard/app/onboarding/onboarding.dart';
 
-import '../../../api/api.dart';
 import '../../../bloc/bloc.dart';
 import '../../../constants/constant.dart';
 import '../../../repository/repository.dart';
@@ -11,15 +9,18 @@ import '../../../routes/application.dart';
 import '../../../utils/logger.dart';
 import '../../common/common.dart';
 import '../error_bar.dart';
-import '../forgot_password/forgot_password_page.dart';
+import '../onboarding.dart';
 import '../onboarding_form_field.dart';
 import '../onboarding_left_view.dart';
 import '../raised_button.dart';
 
 class DesktopCreateNewAccountForm extends StatefulWidget {
   const DesktopCreateNewAccountForm({
+    @required this.memberRepository,
     Key key,
   }) : super(key: key);
+
+  final MemberRepository memberRepository;
 
   @override
   _DesktopCreateNewAccountFormState createState() =>
@@ -37,9 +38,13 @@ class _DesktopCreateNewAccountFormState
   double _errorToastHeight = 0;
   String _errorMessage = '';
 
+  CreateAccountBloc _createAccountBloc;
+
   @override
   void initState() {
     super.initState();
+    _createAccountBloc =
+        CreateAccountBloc(memberRepository: widget.memberRepository);
     _nameTextController
         .addListener(() => setState(() => _name = _nameTextController.text));
     _emailTextController
@@ -48,13 +53,9 @@ class _DesktopCreateNewAccountFormState
         () => setState(() => _password = _passwordTextController.text));
   }
 
-  final LoginBloc _loginBloc = LoginBloc(
-    userRepository: UserRepository(AuthApi()),
-  );
-
   @override
   void dispose() {
-    _loginBloc.close();
+    _createAccountBloc?.close();
     super.dispose();
   }
 
@@ -62,18 +63,19 @@ class _DesktopCreateNewAccountFormState
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (context) => _loginBloc),
+        BlocProvider(create: (context) => _createAccountBloc),
       ],
       child: MultiBlocListener(
         listeners: [
           BlocListener<InternetConnectionBloc, InternetConnectionState>(
             listener: (context, state) => _handelInternetStateChange(state),
           ),
-          BlocListener<LoginBloc, LoginState>(
-            listener: (context, state) => _handleLoginStateChange(state),
+          BlocListener<CreateAccountBloc, CreateAccountState>(
+            listener: (context, state) =>
+                _handleCreateAccountStateChange(state),
           ),
         ],
-        child: BlocBuilder<LoginBloc, LoginState>(
+        child: BlocBuilder<CreateAccountBloc, CreateAccountState>(
           builder: (context, state) => Container(
             width: MediaQuery.of(context).size.width,
             height: MediaQuery.of(context).size.height,
@@ -185,6 +187,20 @@ class _DesktopCreateNewAccountFormState
                   ),
                 ),
                 Positioned(
+                  top: 64,
+                  left: MediaQuery.of(context).size.width * .6 + 32,
+                  child: IconButton(
+                    icon: Icon(
+                      Icons.arrow_back,
+                      color: AppColors.black.withOpacity(.8),
+                    ),
+                    onPressed: () => Application.router.navigateTo(
+                      context,
+                      LoginPage.route,
+                    ),
+                  ),
+                ),
+                Positioned(
                   top: 0,
                   right: 0,
                   left: 0,
@@ -210,13 +226,8 @@ class _DesktopCreateNewAccountFormState
     });
   }
 
-  void _handleLoginStateChange(LoginState state) {
-    if (state is LoginFailure) {
-      setState(() {
-        _errorToastHeight = 64;
-        _errorMessage = state.error;
-      });
-    }
+  void _handleCreateAccountStateChange(CreateAccountState state) {
+    logger.d('Create account state change: $state');
   }
 
   void _handelInternetStateChange(InternetConnectionState state) {
@@ -242,10 +253,12 @@ class _DesktopCreateNewAccountFormState
         _password.isNotEmpty;
   }
 
-  void _handleSignInButtonClick() => Application.router.navigateTo(
-        context,
-        LoginPage.route,
-      );
+  void _handleSignInButtonClick() {
+    Application.router.navigateTo(
+      context,
+      LoginPage.route,
+    );
+  }
 
   void _handleCreateNewAccount() {
     logger.i('Create new account clicked');

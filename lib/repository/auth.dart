@@ -3,8 +3,8 @@ import '../api/api.dart';
 import '../data/data.dart';
 import '../models/models.dart';
 
-class UserRepository {
-  UserRepository(this.authApi);
+class AuthRepository {
+  AuthRepository(this.authApi);
   final AuthApi authApi;
   final _webLocalStorage = WebLocalStorageHelper();
 

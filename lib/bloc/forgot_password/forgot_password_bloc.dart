@@ -9,10 +9,10 @@ part 'forgot_password_state.dart';
 class ForgotPasswordBloc
     extends Bloc<ForgotPasswordEvent, ForgotPasswordState> {
   ForgotPasswordBloc({
-    @required this.userRepository,
-  }) : assert(userRepository != null, 'partnerRepository cannot be null');
+    @required this.authRepository,
+  }) : assert(authRepository != null, 'auth repository cannot be null');
 
-  final UserRepository userRepository;
+  final AuthRepository authRepository;
 
   @override
   ForgotPasswordState get initialState => RecoverPasswordUnInitiated();
@@ -22,7 +22,7 @@ class ForgotPasswordBloc
       ForgotPasswordEvent event) async* {
     yield RecoverPasswordInitiated();
     if (event is RecoverPassword) {
-      final response = await userRepository.recoverPassword(event.email);
+      final response = await authRepository.recoverPassword(event.email);
       if (response.success) {
         yield RecoverPasswordSuccess();
         return;

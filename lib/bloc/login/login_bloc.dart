@@ -6,17 +6,17 @@ import 'package:meta/meta.dart';
 import '../../constants/constant.dart';
 import '../../models/models.dart';
 
-import '../../repository/user.dart';
+import '../../repository/auth.dart';
 
 part 'login_event.dart';
 part 'login_state.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
   LoginBloc({
-    @required this.userRepository,
-  }) : assert(userRepository != null, 'partnerRepository cannot be null');
+    @required this.authRepository,
+  }) : assert(authRepository != null, 'auth repository cannot be null');
 
-  final UserRepository userRepository;
+  final AuthRepository authRepository;
 
   @override
   LoginState get initialState => LoginInitial();
@@ -25,7 +25,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   Stream<LoginState> mapEventToState(LoginEvent event) async* {
     if (event is LoginButtonPressed) {
       yield LoginInProgress();
-      final Token token = await userRepository.generateToken(
+      final Token token = await authRepository.generateToken(
         event.email,
         event.password,
       );
@@ -35,7 +35,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
           errorCode: token.errorCode,
         );
       } else {
-        await userRepository.persistToken(token);
+        await authRepository.persistToken(token);
         yield LoginSuccess();
       }
       //Todo remove it after testing

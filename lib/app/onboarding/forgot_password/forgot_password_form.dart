@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../api/api.dart';
 import '../../../bloc/bloc.dart';
 import '../../../constants/constant.dart';
 import '../../../repository/repository.dart';
@@ -14,7 +13,11 @@ import '../onboarding_left_view.dart';
 import '../raised_button.dart';
 
 class ForgotPasswordForm extends StatefulWidget {
-  const ForgotPasswordForm({Key key}) : super(key: key);
+  const ForgotPasswordForm({
+    @required this.authRepository,
+    Key key,
+  }) : super(key: key);
+  final AuthRepository authRepository;
 
   @override
   _ForgotPasswordFormState createState() => _ForgotPasswordFormState();
@@ -22,9 +25,7 @@ class ForgotPasswordForm extends StatefulWidget {
 
 class _ForgotPasswordFormState extends State<ForgotPasswordForm> {
   final TextEditingController _emailTextController = TextEditingController();
-  final ForgotPasswordBloc _forgotPasswordBloc = ForgotPasswordBloc(
-    userRepository: UserRepository(AuthApi()),
-  );
+  ForgotPasswordBloc _forgotPasswordBloc;
   String _recoveryEmail;
   double _errorToastHeight = 0;
   String _errorMessage = '';
@@ -32,6 +33,9 @@ class _ForgotPasswordFormState extends State<ForgotPasswordForm> {
   @override
   void initState() {
     super.initState();
+    _forgotPasswordBloc = ForgotPasswordBloc(
+      authRepository: widget.authRepository,
+    );
     _emailTextController.addListener(
         () => setState(() => _recoveryEmail = _emailTextController.text));
   }

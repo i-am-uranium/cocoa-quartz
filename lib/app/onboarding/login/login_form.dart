@@ -1,15 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:modal_dashboard/app/onboarding/create_account/create_new_account_page.dart';
 
-import '../../../api/api.dart';
 import '../../../bloc/bloc.dart';
 import '../../../constants/constant.dart';
 import '../../../repository/repository.dart';
 import '../../../routes/application.dart';
 import '../../../utils/logger.dart';
 import '../../common/common.dart';
+import '../create_account/create_new_account_page.dart';
 import '../error_bar.dart';
 import '../forgot_password/forgot_password_page.dart';
 import '../onboarding_form_field.dart';
@@ -18,14 +17,19 @@ import '../raised_button.dart';
 
 class DesktopLoginForm extends StatefulWidget {
   const DesktopLoginForm({
+    @required this.authRepository,
     Key key,
   }) : super(key: key);
+
+  final AuthRepository authRepository;
 
   @override
   _DesktopLoginFormState createState() => _DesktopLoginFormState();
 }
 
 class _DesktopLoginFormState extends State<DesktopLoginForm> {
+  LoginBloc _loginBloc;
+
   final TextEditingController _emailTextController = TextEditingController();
   final TextEditingController _passwordTextController = TextEditingController();
   String _email;
@@ -36,15 +40,14 @@ class _DesktopLoginFormState extends State<DesktopLoginForm> {
   @override
   void initState() {
     super.initState();
+    _loginBloc = LoginBloc(
+      authRepository: widget.authRepository,
+    );
     _emailTextController
         .addListener(() => setState(() => _email = _emailTextController.text));
     _passwordTextController.addListener(
         () => setState(() => _password = _passwordTextController.text));
   }
-
-  final LoginBloc _loginBloc = LoginBloc(
-    userRepository: UserRepository(AuthApi()),
-  );
 
   @override
   void dispose() {
@@ -260,7 +263,7 @@ class _DesktopLoginFormState extends State<DesktopLoginForm> {
     logger.i('Create new account clicked');
     Application.router.navigateTo(
       context,
-      CreateNewAccountPage.route,
+      CreateAccountPage.route,
     );
   }
 }
