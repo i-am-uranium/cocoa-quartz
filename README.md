@@ -1,4 +1,4 @@
-# Modal Dashboard
+# Model Dashboard
 
 Platform for Models
 
