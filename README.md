@@ -1,4 +1,4 @@
-# Model Dashboard
+# Cocoa Quartz
 
 Platform for Models
 
