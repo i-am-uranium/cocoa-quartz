@@ -1,7 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:modal_dashboard/app/home/home_page.dart';
 
 import '../../../bloc/bloc.dart';
 import '../../../constants/constant.dart';
@@ -9,6 +8,7 @@ import '../../../repository/repository.dart';
 import '../../../routes/application.dart';
 import '../../../utils/logger.dart';
 import '../../common/common.dart';
+import '../../home/home_page.dart';
 import '../back_icon_button.dart';
 import '../error_bar.dart';
 import '../onboarding.dart';

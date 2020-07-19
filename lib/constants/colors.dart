@@ -17,4 +17,11 @@ class AppColors {
   static const Color mainBG = Color(0xFFFAFCFE);
   static const Color socialGoogleButtonBG = Color(0xFFF3F3F3);
   static const Color socialFacebookButtonBG = Color(0xFFF0F4FC);
+  static Color navigationRailShadow = const Color(0xFF3D6E92).withOpacity(.1);
+  static const Color navigationRailButton = Color(0xFFD0E8F4);
+  static const Color line = Color(0xFFD0E8F4);
+  static Color inviteContainerShadow = const Color(0xFFD2E0E9).withOpacity(.1);
+  static Color listTitleText = const Color(0xFF656589).withOpacity(.5);
+  static const Color inviteCardText = Color(0xFFBCA678);
+  static const Color inviteCardIcon = Color(0xFFF0E3C8);
 }
