@@ -1,6 +1,6 @@
 # Modal Dashboard
 
-Platform for Modals
+Platform for Models
 
 ## Screenshots
 ![](screenshots/create_account.png)
