@@ -1,23 +1,25 @@
 import 'package:json_annotation/json_annotation.dart';
 
-part 'user.g.dart';
+part 'member.g.dart';
 
 @JsonSerializable(nullable: false)
-class User {
-  User({
+class Member {
+  Member({
     this.id,
     this.firstName,
     this.lastName,
     this.gender,
-    this.phone,
+    this.email,
     this.status,
+    this.username,
+    this.avatar,
     this.error,
     this.errorCode,
   });
 
-  factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
+  factory Member.fromJson(Map<String, dynamic> json) => _$MemberFromJson(json);
 
-  final int id;
+  final String id;
   @JsonKey(name: 'first_name')
   final String firstName;
 
@@ -25,8 +27,10 @@ class User {
   final String lastName;
 
   final String gender;
-  @JsonKey(name: 'primary_number')
-  final String phone;
+
+  final String email;
+  final String username;
+  final String avatar;
 
   final String status;
 
@@ -35,5 +39,7 @@ class User {
   @JsonKey(ignore: true)
   int errorCode;
 
-  Map<String, dynamic> toJson() => _$UserToJson(this);
+  String get name => '$firstName $lastName';
+
+  Map<String, dynamic> toJson() => _$MemberToJson(this);
 }

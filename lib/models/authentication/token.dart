@@ -1,7 +1,7 @@
 import 'dart:core';
 import 'package:json_annotation/json_annotation.dart';
 
-import '../user.dart';
+import '../member.dart';
 part 'token.g.dart';
 
 @JsonSerializable(nullable: false)
@@ -27,7 +27,7 @@ class Token {
   @JsonKey(name: 'refresh_token')
   final String refreshToken;
   @JsonKey(name: 'user')
-  final User user;
+  final Member user;
 
   @JsonKey(ignore: true)
   String error;

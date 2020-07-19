@@ -1,4 +1,8 @@
 class Strings {
+  static const preference = 'Preference';
+  static const timeline = 'Timeline';
+  static const home = 'Home';
+  static const explore = 'Explore';
   static const appName = 'Cocoa Quartz';
   static const emailHint = 'EMAIL';
   static const emailLabel = 'EMAIL';
@@ -34,6 +38,7 @@ class Strings {
   static const sendTimeoutWithServer =
       'Send timeout in connection with API server';
   static const unexpectedErrorOccurred = 'Unexpected error occurred';
+  static const inviteSent = 'Invite Sent';
 }
 
 extension EmailValidator on String {

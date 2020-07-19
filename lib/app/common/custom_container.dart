@@ -8,12 +8,18 @@ class CustomContainer extends StatelessWidget {
     this.borderRadius = 8,
     this.padding = const EdgeInsets.all(8),
     this.color = AppColors.white,
+    this.offset = const Offset(0, 8),
+    this.blurRadius = 10,
+    this.spreadRadius = 0,
     Key key,
   }) : super(key: key);
   final Widget child;
   final Color shadowColor;
   final double borderRadius;
   final EdgeInsets padding;
+  final Offset offset;
+  final double blurRadius;
+  final double spreadRadius;
 
   final Color color;
   @override
@@ -27,9 +33,10 @@ class CustomContainer extends StatelessWidget {
         ),
         boxShadow: [
           BoxShadow(
-            offset: const Offset(0, 8),
+            offset: offset,
             color: shadowColor,
-            blurRadius: 10,
+            blurRadius: blurRadius,
+            spreadRadius: spreadRadius,
           ),
         ],
       ),
